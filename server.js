@@ -19,49 +19,39 @@ function postRequest(server_ip, formData)
         return response.json();
     })
     .then(data => {
-        
+        return data;
     })
     .catch(error => {
-        console.error('Erreur lors de la récupération des données :', error);
+        return null;
+        //console.error('Erreur lors de la récupération des données :', error);
     });
 }
 
 const postSearchCoin = (uid, line, col) =>
 {
-    let isCoint = false;
-
     const formData = {
         uid: uid,
         lig: line,
         col: col
     };
 
-    fetch(`${SERVER_IP, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formData)
-    }}`)
-    .then(response => {
-        if (!response.ok) {
-            return response.json().then(data => {
-                throw new Error(data.error);
-            });
-        }
-
-        return response.json();
-    })
-    .then(data => {
-        
-    })
-    .catch(error => {
-        console.error('Erreur lors de la récupération des données :', error);
-    });
+    let res = postRequest(`${SERVER_IP}/chercherPiece`, formData);
+    return res !== null;
 }
 
-export function postTakeCoin()
+const postTakeCoin = (uid, line, col) =>
 {
+    const formData = {
+        uid: uid,
+        lig: line,
+        col: col
+    };
+
+    let res = postRequest(`${SERVER_IP}/prendrePiece`, formData);
+    if (res === null)
+        return false;
+
+    
 }
 
 export function postPaySpy()
