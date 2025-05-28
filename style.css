@@ -1,0 +1,12 @@
+#table {
+    border-collapse: collapse;
+    width: 600px;
+    height: 600px;
+    border-style:dotted;
+}
+
+.label {
+    background-color: darkblue;
+    text-align: center;
+    color: azure;
+}
