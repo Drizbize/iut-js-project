@@ -1,5 +1,14 @@
 import * as server from "./server.js";
 
+const outputP = document.getElementById("output");
+const lineInput = document.getElementById("lineInput");
+const colInput = document.getElementById("colInput");
+
+export async function update()
+{
+    updateTable();
+}
+
 export async function updateTable()
 {
     let tableHtml = document.getElementById("table");
@@ -18,6 +27,22 @@ export async function updateTable()
         }
         tableHtml.appendChild(row);
     }
+}
+
+export function output(text, isCorrect = true)
+{
+    outputP.innerHTML = text;
+    outputP.style.backgroundColor = isCorrect ? "lightgreen" : "red";
+}
+
+export function getLine()
+{
+    return lineInput.value;
+}
+
+export function getCol()
+{
+    return colInput.value;
 }
 
 export function sleep(ms) {

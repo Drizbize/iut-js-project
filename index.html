@@ -14,15 +14,50 @@
 
     <div id="main">
         <div>
-
+            <table id="infoTable"></table>
         </div>
         <div>
-
+            <table id="table"></table> <!--Creates with post fetch in js-->
         </div>
         <div>
-
+            <div class="section">
+                <h2>Identification</h2>
+                <div>
+                    <input id="uidInput" type="text">
+                    <button id="verificationBtn">Verifier mon equipe</button>
+                </div>
+            </div>
+            <div class="section">
+                <h2>Action de jeu</h2>
+                <div>
+                    <div id="inputText">
+                        <p>Ligne</p>
+                        <input id="lineInput" type="number">
+                    </div>
+                    <div class="inputText">
+                        <p>Colonne</p>
+                        <input id="colInput" type="number">
+                    </div>
+                </div>
+                <div>
+                    <button id="searchCoinBtn">Chercher piece</button>
+                    <button id="takeCoinBtn">Prendre piece</button>
+                    <button id="stealCoinBtn">Voler piece</button>
+                </div>
+                <div>
+                    <button id="paySpyBtn">Payer espion</button>
+                </div>
+            </div>
+            <div class="section">
+                <h2>QR codes</h2>
+                <div>
+                    <input id="megicNumberInput" type="text">
+                    <button id="megicNumberBtn">Valider</button>
+                </div>
+            </div>
+            <p id="output"></p>
         </div>
     </div>
-    <table id="table"></table>
+    
 </body>
 </html>

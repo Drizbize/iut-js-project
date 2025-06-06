@@ -1,4 +1,4 @@
-const SERVER_IP = "https://pixel-api.codenestedu.fr/";
+const SERVER_IP = "https://pixel-api.codenestedu.fr";
 
 async function postRequest(server_ip, formData) {
     try {
@@ -15,12 +15,10 @@ async function postRequest(server_ip, formData) {
             throw new Error(errorData.error);
         }
 
-        const data = await response.json();
-        console.log("postRequest result:", data);
-        return data;
+        return {result: true, data: await response.json()};
     } catch (error) {
-        console.error("Erreur lors de l'envoi des données :", error);
-        return null;
+        //console.error("Erreur lors de l'envoi des données :", error);
+        return {result: false, data: error};
     }
 }
 
@@ -31,15 +29,13 @@ async function getRequest(server_ip, commande) {
             const errorData = await response.json();
             throw new Error(errorData.error);
         }
-
-        return await response.json();
+        return {result: true, data: await response.json()};
     } catch (error) {
-        console.error("Erreur lors de la récupération des données :", error);
-        return null;
+        return {result: false, data: error};
     }
 }
 
-export const postSearchCoin = (uid, line, col) =>
+export const postSearchCoin = async (uid, line, col) =>
 {
     const formData = {
         uid: uid,
@@ -47,17 +43,14 @@ export const postSearchCoin = (uid, line, col) =>
         col: col
     };
 
-    let res = postRequest(`${SERVER_IP}/chercherPiece`, formData);
-    if (res === null)
-        return {resultat: false, msg: "Server error"};
-
-    if (res["error"] !== null)
-        return {resultat: false, msg: res["error"]};
-
-    return {resultat: true, msg: "Exist coin on this possition"};
+    let res = await postRequest(`${SERVER_IP}/chercherPiece`, formData);
+    if (!res.result) return {result: false, msg: res.data};
+    if (res.data.error !== undefined) return {result: false, msg: res.data.error};
+    
+    return {result: true, msg: "Exist coin on this possition"};
 }
 
-export const postTakeCoin = (uid, line, col) =>
+export const postTakeCoin = async (uid, line, col) =>
 {
     const formData = {
         uid: uid,
@@ -65,33 +58,27 @@ export const postTakeCoin = (uid, line, col) =>
         col: col
     };
 
-    let res = postRequest(`${SERVER_IP}/prendrePiece`, formData);
-    if (res === null)
-        return {resultat: false, msg: "Server error"};
+    let res = await postRequest(`${SERVER_IP}/prendrePiece`, formData);
+    if (!res.result) return {result: false, msg: res.data};
+    if (res.data.error !== undefined) return {result: false, msg: res.data.error};
 
-    if (res["error"] !== null)
-        return {resultat: false, msg: res["error"]};
-
-    return {resultat: res["piecePresente"], msg: res["valeurPiece"]};
+    return {result: res.data.piecePresente, msg: res.data.valeurPiece};
 }
 
-export const postPaySpy = (uid) =>
+export const postPaySpy = async (uid) =>
 {
     const formData = {
         uid: uid
     };
 
-    let res = postRequest(`${SERVER_IP}/payerEspion`, formData);
-    if (res === null)
-        return {resultat: false, msg: "Server error"};
+    let res = await postRequest(`${SERVER_IP}/payerEspion`, formData);
+    if (!res.result) return {result: false, msg: res.data};
+    if (res.data.error !== undefined) return {result: false, msg: res.data.error};
 
-    if (res["error"] !== null)
-        return {resultat: false, msg: res["error"]};
-
-    return {resultat: true, msg: res["success"]};
+    return {result: true, msg: res.data["success"]};
 }
 
-export const postStealCoin = (uid, line, col) =>
+export const postStealCoin = async (uid, line, col) =>
 {
     const formData = {
         uid: uid,
@@ -99,54 +86,56 @@ export const postStealCoin = (uid, line, col) =>
         col: col
     };
 
-    let res = postRequest(`${SERVER_IP}/volerPiece`, formData);
-    if (res === null)
-        return {resultat: false, msg: "Server error"};
+    let res = await postRequest(`${SERVER_IP}/volerPiece`, formData);
+    if (!res.result) return {result: false, msg: res.data};
+    if (res.data.error !== undefined) return {result: false, msg: res.data.error};
 
-    if (res["error"] !== null)
-        return {resultat: false, msg: res["error"]};
-
-    return {resultat: true, msg: res["success"], data: res["piece"]};
+    return {result: true, msg: res["success"], data: res["piece"]};
 }
 
-export const postMegicNumber = (megicNumber) =>
+export const postMegicNumber = async (megicNumber) =>
 {
     const formData = {
         uid: uid,
         megicNumber: megicNumber
     };
 
-    let res = postRequest(`${SERVER_IP}/megic-number`, formData);
-    if (res === null)
-        return {resultat: false, msg: "Server error"};
+    let res = await postRequest(`${SERVER_IP}/megic-number`, formData);
+    if (!res.result) return {result: false, msg: res.data};
+    if (res.data.error !== undefined) return {result: false, msg: res.data.error};
 
-    if (res["error"] !== null)
-        return {resultat: false, msg: res["error"]};
-
-    return {resultat: true, msg: res["success"]};
+    return {result: true, msg: res.data["success"]};
 }
 
-export const getTable = () =>
+export const getTable = async () =>
 {
-    return getRequest(SERVER_IP, "tableau");
+    return (await getRequest(SERVER_IP, "tableau")).data;
 }
 
-export const getCoinsInBank = () =>
+export const getCoinsInBank = async () =>
 {
-    return getRequest(SERVER_IP, "pieceEnBanque");
+    return (await getRequest(SERVER_IP, "pieceEnBanque")).data;
 }
 
-export const getListPlayers = () =>
+export const getListPlayers = async () =>
 {
-    return getRequest(SERVER_IP, "liste-joueurs");
+    return (await getRequest(SERVER_IP, "liste-joueurs")).data;
 }
 
-export const getUserTeam = (uid) =>
+export const getUserTeam = async (uid) =>
 {
-    return getRequest(SERVER_IP, `/equipe-utilisateur?uid=${uid}`);
+    let res = await getRequest(SERVER_IP, `equipe-utilisateur?uid=${uid}`);
+    if (!res.result)
+        return {result: false, msg: res.data};
+
+    return {result: true, msg: res.data.equipe};
 }
 
-export const getWaitTime = (uid) =>
+export const getWaitTime = async (uid) =>
 {
-    return getRequest(SERVER_IP, `/temps-attente?uid=${uid}`);
+    let res = await getRequest(SERVER_IP, `/temps-attente?uid=${uid}`);
+    if (!res.result)
+        return {result: false, msg: res.data};
+
+    return {result: true, msg: res.data.tempsAttente};
 }
