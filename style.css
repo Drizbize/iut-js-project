@@ -1,27 +1,206 @@
+/* ===== Reset de base ===== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+.board-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ===== Body ===== */
+body {
+  background-color: rgb(234, 234, 234);
+  padding-top: 15px;
+  padding-left: 50px;
+  padding-right: 50px;
+}
+
 #title {
-    width: 100%;
-    height: 70px;
-    margin-bottom: 20px;
-}
-
-#main {
-
-}
-
-#table {
-    border-collapse: collapse;
-    width: 400px;
-    height: 400px;
-    border-style: dashed;
+  width: 100%;
+  height: 70px;
+  margin-bottom: 20px;
 }
 
 .label {
-    width: 100%;
-    height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: darkblue;
+  color: azure;
+  font-size: 1.5rem;
+  letter-spacing: 1px;
+}
 
-    display: flex;
-    background-color: darkblue;
-    color: azure;
-    justify-content: center;
-    align-items: center;
+#main {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+#infoTable {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+#infoTable th,
+#infoTable td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+#infoTable th {
+  background-color: #eee;
+  font-weight: bold;
+}
+
+#table {
+  width: 100%;
+  max-width: 600px;
+  aspect-ratio: 1;
+  table-layout: fixed;
+  border-collapse: collapse;
+  border: 2px dashed #333;
+}
+
+#table td {
+  border: 1px solid transparent;
+}
+
+#waitTimeText {
+  margin-top: 10px;
+  color: rgb(161, 0, 0);
+  font-weight: bold;
+}
+
+#cheatTable {
+  margin-top: 10px;
+  text-align: center;
+  white-space: pre-wrap;
+  max-width: 400px;
+  font-family: monospace;
+  font-size: 0.9rem;
+}
+
+.section {
+  background: white;
+  padding: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
+}
+
+.section h2 {
+  margin-bottom: 10px;
+  background-color: darkblue;
+  color: white;
+  padding: 5px;
+  font-size: 1.1rem;
+  text-align: center;
+}
+
+.section input[type="text"],
+.section input[type="number"] {
+  width: calc(100% - 12px);
+  padding: 5px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+.section .inputText {
+  display: inline-block;
+  width: 48%;
+}
+
+.section .inputText p {
+  margin-bottom: 3px;
+  font-size: 0.9rem;
+}
+
+.section button {
+  padding: 6px 12px;
+  margin: 3px;
+  border: none;
+  background-color: #0055cc;
+  color: white;
+  cursor: pointer;
+  border-radius: 3px;
+  font-size: 0.9rem;
+}
+
+.section button:hover {
+  background-color: #003f9a;
+}
+
+#output {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 10px;
+  border: 1px solid #f5c6cb;
+  border-radius: 3px;
+  min-height: 40px;
+}
+
+#playersInfo,
+#bankInfo {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
+}
+
+#playersInfo th,
+#bankInfo th {
+  background-color: #0040a0;
+  color: white;
+  padding: 8px;
+  text-align: left;
+  font-size: 0.95rem;
+}
+
+#playersInfo td,
+#bankInfo td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  font-size: 0.9rem;
+}
+
+#playersInfo td[colspan],
+#bankInfo td[colspan] {
+  text-align: center;
+  color: #a00;
+}
+
+#playersInfo tbody tr:nth-child(odd) {
+  background-color: #f9f9f9;
+}
+
+#bankInfo tbody tr:hover {
+  background-color: #eef;
+}
+
+#playersInfo caption,
+#bankInfo caption {
+  caption-side: top;
+  text-align: left;
+  font-weight: bold;
+  padding: 6px 0;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 900px) {
+  #main {
+    grid-template-columns: 1fr;
+  }
 }

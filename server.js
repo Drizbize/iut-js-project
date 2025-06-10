@@ -47,7 +47,10 @@ export const postSearchCoin = async (uid, line, col) =>
     if (!res.result) return {result: false, msg: res.data};
     if (res.data.error !== undefined) return {result: false, msg: res.data.error};
     
-    return {result: true, msg: "Exist coin on this possition"};
+    if (res.data.piecePresenteLigne === -1)
+        return {result: false, msg: "Coin desn't exist on this position"}
+
+    return {result: true, msg: "Exist coin on this position"};
 }
 
 export const postTakeCoin = async (uid, line, col) =>
@@ -93,7 +96,7 @@ export const postStealCoin = async (uid, line, col) =>
     return {result: true, msg: res["success"], data: res["piece"]};
 }
 
-export const postMegicNumber = async (megicNumber) =>
+export const postMegicNumber = async (uid, megicNumber) =>
 {
     const formData = {
         uid: uid,
@@ -104,7 +107,7 @@ export const postMegicNumber = async (megicNumber) =>
     if (!res.result) return {result: false, msg: res.data};
     if (res.data.error !== undefined) return {result: false, msg: res.data.error};
 
-    return {result: true, msg: res.data["success"]};
+    return {result: true, msg: res.data["message"]};
 }
 
 export const getTable = async () =>
@@ -114,7 +117,7 @@ export const getTable = async () =>
 
 export const getCoinsInBank = async () =>
 {
-    return (await getRequest(SERVER_IP, "pieceEnBanque")).data;
+    return (await getRequest(SERVER_IP, "piecesEnBanque")).data;
 }
 
 export const getListPlayers = async () =>
@@ -133,7 +136,7 @@ export const getUserTeam = async (uid) =>
 
 export const getWaitTime = async (uid) =>
 {
-    let res = await getRequest(SERVER_IP, `/temps-attente?uid=${uid}`);
+    let res = await getRequest(SERVER_IP, `temps-attente?uid=${uid}`);
     if (!res.result)
         return {result: false, msg: res.data};
 
